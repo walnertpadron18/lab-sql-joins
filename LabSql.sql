@@ -34,3 +34,24 @@ JOIN film_category fc ON c.category_id = fc.category_id
 JOIN film f           ON fc.film_id = f.film_id
 GROUP BY c.category_id, c.name
 ORDER BY avg_length DESC;
+
+-- 5. Categorías con mayor duración media
+SELECT
+    c.name AS category,
+    ROUND(AVG(f.length), 2) AS avg_length
+FROM category c
+JOIN film_category fc ON c.category_id = fc.category_id
+JOIN film f           ON fc.film_id = f.film_id
+GROUP BY c.category_id, c.name
+ORDER BY avg_length DESC;
+
+-- 6. Las 10 películas más alquiladas
+SELECT
+    f.title,
+    COUNT(r.rental_id) AS times_rented
+FROM film f
+JOIN inventory i ON f.film_id = i.film_id
+JOIN rental r    ON i.inventory_id = r.inventory_id
+GROUP BY f.film_id, f.title
+ORDER BY times_rented DESC
+LIMIT 10;
